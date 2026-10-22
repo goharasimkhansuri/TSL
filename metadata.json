@@ -1,0 +1,6 @@
+{
+  "name": "Learner Screening",
+  "description": "Offline student screening and progress tracking tool with bilingual Urdu and English assessment checklists and evidence-based interventions.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

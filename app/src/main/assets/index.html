@@ -1,0 +1,157 @@
+<!DOCTYPE html><html lang="ur-Latn"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Learner Screening</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,Segoe UI,sans-serif;background:#eef2f9;color:#1e293b;font-size:15px;padding-bottom:28px;-webkit-tap-highlight-color:transparent}
+header{background:linear-gradient(135deg,#4f46e5,#06b6d4);color:#fff;padding:16px 14px;font-weight:800;font-size:18px;border-radius:0 0 22px 22px;box-shadow:0 6px 18px #4f46e555;position:sticky;top:0;z-index:5;display:flex;justify-content:space-between;align-items:center;gap:8px}
+header select{padding:5px;font-size:13px}main{padding:12px;max-width:820px;margin:auto}
+.c{background:#fff;border-radius:16px;padding:14px;margin:10px 0;box-shadow:0 4px 14px #1e293b14}
+button,select,input,textarea{font:inherit;padding:9px 12px;border:1px solid #cbd5e1;border-radius:12px;background:#fff;max-width:100%}
+button{background:linear-gradient(135deg,#4f46e5,#6366f1);color:#fff;border:0;margin:2px;font-weight:600;cursor:pointer}button.g{background:#64748b}button.r{background:#ef4444}button.s{background:#10b981}
+input,textarea{width:100%;margin:3px 0 8px}.row{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.tabs button,.nav button{flex:1;background:#e0e7ff;color:#3730a3}.tabs button.on,.nav button.on{background:linear-gradient(135deg,#4f46e5,#06b6d4);color:#fff}
+.nav{display:flex;gap:6px;background:#fff;padding:6px;border-radius:16px;box-shadow:0 4px 14px #1e293b14}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(125px,1fr));gap:10px}.tile{border-radius:16px;padding:14px;color:#fff}.tile b{display:block;font-size:30px}.tile span{font-size:12px}
+.sb{display:flex;height:18px;border-radius:9px;overflow:hidden;background:#e2e8f0;margin:3px 0 10px}.sb i{display:block}.lg span{display:inline-block;margin:2px 8px 2px 0;font-size:12px}.lg i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:4px}
+.q{padding:8px 0;border-bottom:1px solid #eef}.opt label{display:inline-block;margin:3px 6px 0 0;font-size:13px;background:#f1f5f9;padding:4px 8px;border-radius:10px}.opt input{width:auto;margin:0 3px 0 0}
+.bar{background:#e2e8f0;border-radius:6px;height:14px;margin:2px 0 8px}.bar i{display:block;height:100%;border-radius:6px}
+.bd{display:inline-block;padding:2px 9px;border-radius:10px;color:#fff;font-size:12px}
+table{width:100%;border-collapse:collapse;font-size:13px}td,th{border-bottom:1px solid #e2e8f0;padding:5px;text-align:left}
+.sm{font-size:12px;color:#64748b}.up{color:#059669}.dn{color:#dc2626}h3{margin:10px 0 4px;color:#3730a3}li{margin:4px 0}
+.ui{unicode-bidi:isolate}.ur{direction:rtl;unicode-bidi:isolate;display:block;text-align:right;font-family:'Noto Nastaliq Urdu','Jameel Noori Nastaleeq','Noto Naskh Arabic',serif;font-size:18px;line-height:2}
+</style></head><body><header><span id=hn>Learner Screening &amp; Tracking</span><select id=lsel onchange=setLang(this.value)><option value=b>اردو + English</option><option value=u>اردو</option><option value=e>English</option></select></header><main id="app"></main>
+<script>
+const D={R:['Parhna',[['حروف اور آوازوں کو پہچاننے اور جوڑنے میں دشواری ہوتی ہے','Has difficulty recognising letters and matching them to sounds'],['پڑھتے وقت الفاظ چھوڑ دیتا/دیتی ہے یا الٹا پڑھتا/پڑھتی ہے (جیسے ب/پ، was/saw)','Skips, guesses or reverses words while reading (e.g. b/d, was/saw)'],['روانی سے نہیں پڑھ پاتا/پاتی؛ رک رک کر ہجے کرتا/کرتی ہے','Reads slowly and haltingly; sounds out most words'],['پڑھا ہوا متن سمجھنے یا سنانے میں دشواری ہوتی ہے','Has difficulty understanding or retelling what was read']],'پڑھنا','Reading'],
+W:['Likhna',[['لکھائی بے ترتیب یا ناقابلِ فہم ہے؛ حروف کا سائز اور فاصلہ غیر متوازن','Handwriting is messy or hard to read; uneven letter size and spacing'],['املا کی بہت زیادہ غلطیاں کرتا/کرتی ہے','Makes frequent spelling errors'],['بورڈ یا کتاب سے نقل کرنے میں سست ہے یا غلطیاں کرتا/کرتی ہے','Is slow or inaccurate when copying from the board or book'],['اپنے خیالات کو جملوں میں ترتیب سے لکھنے میں دشواری ہوتی ہے','Struggles to organise ideas into written sentences']],'لکھنا','Writing'],
+M:['Yaadasht',[['2-3 ہدایات ایک ساتھ دی جائیں تو بھول جاتا/جاتی ہے','Forgets multi-step instructions (2-3 steps)'],['سبق یاد کر کے جلد بھول جاتا/جاتی ہے','Forgets recently learned material quickly'],['پہاڑے، حروفِ تہجی، دنوں/مہینوں کی ترتیب یاد رکھنے میں دشواری ہوتی ہے','Has difficulty retaining tables, alphabet, days/months sequences'],['کام کے دوران اپنی جگہ کھو دیتا/دیتی ہے (مثلاً سوال حل کرتے ہوئے)','Loses place mid-task (e.g. while solving a problem)']],'یادداشت','Memory'],
+S:['Bolna/Sunna',[['صحیح لفظ ڈھونڈنے یا درست الفاظ بولنے میں دشواری ہوتی ہے','Has difficulty finding the right word or pronouncing words'],['مکمل اور درست جملے بنانے میں دشواری ہوتی ہے','Has difficulty forming complete, grammatical sentences'],['زبانی ہدایات سمجھنے میں دشواری ہوتی ہے','Has difficulty understanding spoken instructions'],['بار بار "کیا؟" پوچھتا/پوچھتی ہے یا بات دہرانے کو کہتا/کہتی ہے','Frequently asks for things to be repeated ("what?")']],'بولنا / سننا','Speaking / Listening'],
+G:['Samajh/Maths',[['گنتی، عددی تصور اور جمع/تفریق میں ہم عمر بچوں سے پیچھے ہے','Lags behind peers in counting, number sense and basic arithmetic'],['نیا تصور سمجھنے کے لیے ہم عمر بچوں سے بہت زیادہ وقت اور دہرائی درکار ہوتی ہے','Needs much more time and repetition than peers to grasp new concepts'],['سیکھی ہوئی بات کو نئی صورتحال میں استعمال نہیں کر پاتا/پاتی','Cannot transfer what was learned to new situations'],['تقریباً تمام مضامین میں کمزور ہے، صرف ایک میں نہیں','Is weak in almost all subjects, not just one']],'فہم / ریاضی','Comprehension / Maths'],
+A:['Tawajjuh',[['توجہ جلد ہٹ جاتی ہے یا آسانی سے بھٹک جاتا/جاتی ہے','Easily distracted; attention drifts quickly'],['کام شروع کر کے ادھورا چھوڑ دیتا/دیتی ہے','Starts but fails to finish tasks'],['بے چین رہتا/رہتی ہے، بیٹھنا ہو تو بار بار اٹھ جاتا/جاتی ہے','Fidgets or leaves seat when expected to stay seated']],'توجہ','Attention'],
+B:['Rawaiya',[['کلاس میں شرارت یا لڑائی جھگڑا کرتا/کرتی ہے','Disrupts class or fights with peers'],['ہدایات یا قواعد کی پیروی نہیں کرتا/کرتی','Does not follow instructions or rules'],['آسانی سے غصے میں آ جاتا/جاتی ہے یا ضد کرتا/کرتی ہے','Loses temper easily or is defiant']],'رویہ','Behaviour'],
+N:['Dilchaspi',[['پڑھائی میں دلچسپی کم لیتا/لیتی ہے','Shows little interest in academic work'],['گھر کا کام مکمل نہیں کرتا/کرتی','Does not complete homework'],['عملی سرگرمیوں میں بھی دلچسپی نہیں لیتا/لیتی','Shows little interest even in hands-on activities']],'دلچسپی','Interest / Engagement'],
+E:['Sehat/Mahol',[['دور سے دیکھنے میں دشواری، آنکھیں ملنا یا سر درد کی شکایت','Difficulty seeing at a distance, eye rubbing or headache complaints'],['آواز کم سنتا/سنتی ہے یا پکارنے پر جواب نہیں دیتا/دیتی','Seems to hear poorly or does not respond when called'],['گھر میں تناؤ، غربت، نیند یا غذا کی کمی','Home stress, poverty, or poor sleep/nutrition'],['اکثر غیر حاضر رہتا/رہتی ہے یا اسکول سے ڈرتا/ڈرتی ہے','Frequent absence or fear/avoidance of school']],'صحت / ماحول','Health / Environment']};
+const AC=['R','W','M','S','G'],OP=[['کبھی نہیں','Never'],['کبھی کبھار','Sometimes'],['اکثر','Often'],['ہمیشہ','Always']];
+let lang='b';try{lang=localStorage.getItem('sl_lang')||'b'}catch(e){}
+const U=t=>t.replace(/[A-Za-z0-9](?:[A-Za-z0-9 :\/.+%\-]*[A-Za-z0-9%])?/g,'<bdi dir=ltr>$&</bdi>');
+const L=p=>lang=='u'?'<span class=ur>'+U(p[0])+'</span>':lang=='e'?p[1]:'<span class=ur>'+U(p[0])+'</span>'+p[1];
+const LI=p=>lang=='u'?'<span dir=rtl class=ui>'+U(p[0])+'</span>':lang=='e'?p[1]:'<span dir=rtl>'+p[0]+'</span> / '+p[1];
+const NM=k=>LI([D[k][2],D[k][3]]);
+const BASIS='Research basis: items are adapted from published indicators in DSM-5 (APA, 2013: specific learning disorder, ADHD, intellectual functioning), the IDA definition of dyslexia, the Working Memory Rating Scale (Alloway, Gathercole & Kirkwood, 2008), the SDQ (Goodman, 1997) and the slow-learner / borderline intellectual functioning literature (IQ approx. 70-85). This is a teacher-rated screening checklist, not a standardised or norm-referenced test; confirm with a qualified psychologist.';
+function setLang(v){if(draft){draft.d=$('#td').value;draft.n=$('#tn').value;for(const z in D)D[z][1].forEach((_,i)=>{const r=document.querySelector('input[name="'+z+i+'"]:checked');draft.a[z+i]=r?+r.value:0})}lang=v;try{localStorage.setItem('sl_lang',v)}catch(e){}view()}
+const AR=[['r','Reading','پڑھنا'],['w','Writing','لکھنا'],['m','Memory','یادداشت'],['s','Speaking','بولنا'],['l','Listening','سننا'],['g','Maths / Understanding','ریاضی / فہم'],['a','Attention','توجہ'],['b','Behaviour (5 = well-behaved)','رویہ (5 = بہت اچھا)'],['i','Interest / Engagement','دلچسپی']],AN=a=>LI([a[2],a[1]]);
+let db=ld(),cur=null,tab='test',draft=null,tl=-1,fc='',fs='n',kf=null;
+function ld(){try{return JSON.parse(localStorage.getItem('sl_db'))||{kids:[]}}catch(e){return{kids:[]}}}
+function sv(){try{localStorage.setItem('sl_db',JSON.stringify(db))}catch(e){nt('Data save nahi hua (storage full?)')}}
+const $=s=>document.querySelector(s),app=$('#app'),td=()=>new Date().toISOString().slice(0,10);
+const E=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const K=()=>db.kids.find(k=>k.id==cur);
+function dl(n,t,y){
+  if(window.AndroidBridge && window.AndroidBridge.saveFile){
+    window.AndroidBridge.saveFile(n, t, y);
+    return;
+  }
+  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([t],{type:y}));a.download=n;document.body.appendChild(a);a.click();a.remove();
+}
+function pct(a){const p={};for(const k in D){let s=0,n=D[k][1].length;D[k][1].forEach((_,i)=>s+=+(a[k+i]||0));p[k]=Math.round(s/(3*n)*100)}return p}
+const VT={S:[['سست رفتار سیکھنے والا (ممکنہ)','Probable slow learner'],'#dc2626',['کئی تعلیمی شعبوں میں کمزوری، بشمول فہم؛ صرف ایک شعبے تک محدود نہیں۔','Weakness across several academic areas including comprehension, not limited to one area.']],
+X:[['سست رفتار سیکھنے کے آثار + توجہ/رویے کا مسئلہ','Slow-learner indicators + attention/behaviour concerns'],'#9f1239',['تعلیمی کمزوری کے ساتھ توجہ یا رویے کے مسائل بھی ہیں۔','Academic weakness together with attention or behaviour concerns.']],
+L:[['مخصوص سیکھنے کی مشکل کا امکان','Possible specific learning difficulty'],'#f59e0b',['کمزوری چند مخصوص شعبوں تک محدود ہے، باقی شعبے بہتر ہیں۔','Weakness is limited to specific areas; other areas are comparatively intact.']],
+A:[['توجہ/رویے کا مسئلہ','Attention/behaviour concern'],'#3b82f6',['تعلیمی شعبے ٹھیک ہیں؛ مسئلہ توجہ یا رویے کا ہے۔','Academic areas are adequate; the concern is attention or behaviour.']],
+M:[['دلچسپی/تحریک کا مسئلہ','Motivation/engagement concern'],'#8b5cf6',['صلاحیت ٹھیک مگر دلچسپی کم ہے۔','Ability appears adequate but engagement is low.']],
+O:[['کوئی نمایاں مسئلہ نہیں','No significant concern'],'#10b981',['اسکور کسی مشکل کی نشاندہی نہیں کرتا؛ نگرانی جاری رکھیں۔','Scores do not indicate a difficulty; continue monitoring.']]};
+function vd(p){const ah=AC.filter(k=>p[k]>=50),ab=['A','B'].filter(k=>p[k]>=50);let k;
+if(ah.length>=4&&ah.includes('G'))k=ab.length?'X':'S';else if(ah.length)k='L';else if(ab.length)k='A';else if(p.N>=50)k='M';else k='O';
+return{k,c:VT[k][1],t:VT[k][0],d:VT[k][2],ah}}
+const ST={R:[['روزانہ 15 منٹ صوتیات (فونکس): حرف-آواز کے کھیل، کارڈز سے آوازیں جوڑنا','Daily 15-min phonics: letter-sound games, blending sounds with cards/objects'],['منظم ہجے/ڈی کوڈنگ مشق اور چھوٹے اقتباسات کی جوڑی میں بلند خوانی (روانی)','Structured decoding drills and paired repeated reading of short passages (fluency)'],['مطالعہ کی حکمتِ عملی: پیشگی جائزہ، نشان زد کرنا، ہر پیراگراف کا خلاصہ؛ آڈیو مدد','Reading strategies: preview, highlight, summarise each paragraph; audio support']],
+W:[['ریت/ہوا میں حروف بنانا، پھر کاپی پر؛ روزانہ 10 منٹ مشق','Trace letters in sand/air, then on paper; 10 min daily practice'],['ہجے حصوں (syllables) میں سکھانا؛ جملہ بنانے کے سانچے دینا','Teach spelling by syllable chunks; give sentence frames for writing'],['خاکہ-مسودہ-نظرثانی گرافک آرگنائزر کے ساتھ؛ زبانی جواب یا ٹائپنگ کی اجازت','Plan-draft-revise with graphic organisers; allow oral or typed responses']],
+M:[['ایک وقت میں ایک ہدایت، تصاویر کے ساتھ؛ نظم/تکرار سے یاد کرانا','One instruction at a time with pictures; rhymes and repetition to remember'],['مواد چھوٹے حصوں میں؛ وقفے وقفے سے دہرائی (اگلے دن، تیسرے اور ساتویں دن)','Chunk content; spaced review (next day, day 3, day 7)'],['خود امتحانی، یادداشت کے ہتھکنڈے (منموکس) اور تحریری چیک لسٹ','Self-quizzing (retrieval practice), mnemonics and written checklists']],
+S:[['روزانہ گفتگو: تصویر بیان کرنا، کہانی دہرانا؛ درست جملے بول کر دکھانا','Daily talk time: describe pictures, retell stories; model correct sentences'],['نئے الفاظ پہلے سکھانا؛ بچے سے ہدایت اپنے الفاظ میں دہرانے کو کہنا','Pre-teach vocabulary; ask child to restate instructions in own words'],['جوڑی میں بحث، لکھنے سے پہلے زبانی خلاصہ؛ ہدایات تحریری شکل میں','Pair discussion and oral summary before writing; give written instructions']],
+G:[['اشیاء سے گنتی (ٹھوس سے تصویری)؛ نمبر لائن کے کھیل','Counting with real objects (concrete to pictorial); number-line games'],['ٹھوس-تصویری-مجرد مراحل؛ حل شدہ مثالیں؛ ایک وقت میں ایک تصور اور روزانہ دہرائی','Concrete-pictorial-abstract steps; worked examples; one concept at a time with daily review'],['حقیقی زندگی (پیسے، ناپ تول) سے جوڑیں؛ مسئلہ مراحل میں توڑیں؛ پہلے بنیادی تصورات دہرائیں','Link to real life (money, measurement); break problems into steps; revisit prerequisites first']],
+A:[['5-10 منٹ کے مختصر کام، حرکت کے وقفے، استاد کے قریب نشست، اسٹکر چارٹ','Short 5-10 min tasks, movement breaks, seat near teacher, sticker chart'],['روزانہ رپورٹ کارڈ (2-3 اہداف)؛ بصری ٹائمر؛ توجہ پر فوری تعریف','Daily report card (2-3 targets); visual timer; immediate praise for on-task behaviour'],['خود نگرانی چیک لسٹ، کام کو ٹکڑوں میں تقسیم اور مقررہ وقت، خلل کم کریں','Self-monitoring checklist; chunk tasks with deadlines; reduce distractions']],
+B:[['تصویری 3 آسان قواعد؛ عمل پر فوراً تعریف','3 simple picture rules; immediate praise for following them'],['رویے کا معاہدہ اور پوائنٹ سسٹم؛ پرسکون ہونے کے مراحل؛ تعریف اور اصلاح کا تناسب تقریباً 4:1','Behaviour contract and point system; teach calming steps; about 4 praises per correction'],['نجی گفتگو، طالب علم کے ساتھ ہدف بندی، ہم عمر رہنما یا کونسلر سے رجوع','Private conferencing, goal setting with the student, peer mentor or counsellor referral']],
+N:[['کھیل، گیت، کہانی اور عملی سرگرمیوں سے سیکھنا؛ آسان کامیاب کاموں سے آغاز','Learn through play, songs, stories and hands-on tasks; start with easy wins'],['اسباق کو بچے کی پسند سے جوڑیں؛ انتخاب دیں؛ ترقی کا چارٹ؛ والدین سے رابطہ','Link lessons to interests; offer choices; progress chart; involve parents'],['عملی زندگی/کیریئر سے ربط، ذاتی اہداف، پراجیکٹ پر مبنی کام، رہنمائی','Connect to real-life/career use, personal goals, project-based tasks, mentoring']],
+E:[['نظر اور سماعت کی جانچ کروائیں؛ والدین سے ملیں؛ نیند، خوراک اور حاضری دیکھیں؛ کونسلر سے مدد','Refer for vision and hearing screening; meet parents; check sleep, nutrition and attendance; counsellor support']]};
+const PL={S:[['درجہ 3: روزانہ 30 منٹ، چھوٹا گروپ (3-5) یا انفرادی، 12 ہفتے؛ انفرادی تعلیمی منصوبہ (IEP)؛ ماہرِ نفسیات سے IQ/موافقتی رویے کی جانچ','Tier 3: 30 min daily, small group (3-5) or 1:1, 12 weeks; Individual Education Plan (IEP); refer to a psychologist for IQ/adaptive-behaviour assessment'],12],
+L:[['درجہ 2: ہفتے میں 3-5 دن، 20-30 منٹ، گروپ (3-5)، 8-12 ہفتے؛ متاثرہ شعبے پر اصلاحی تدریس','Tier 2: 20-30 min, 3-5 days/week, group of 3-5, 8-12 weeks; targeted remedial teaching in the flagged area'],10],
+A:[['درجہ 2: کلاس میں روزانہ رپورٹ کارڈ/رویے کا منصوبہ، 8 ہفتے؛ بہتری نہ ہو تو کونسلر/ماہر سے رجوع','Tier 2: daily report card/behaviour plan in class for 8 weeks; refer to counsellor/specialist if no improvement'],8],
+M:[['درجہ 2: دلچسپی بڑھانے کا منصوبہ، 8 ہفتے، والدین سے رابطہ','Tier 2: engagement plan for 8 weeks with parent contact'],8],
+O:[['درجہ 1: عام کلاس سپورٹ؛ اگلے سمسٹر میں دوبارہ اسکریننگ','Tier 1: regular classroom support; re-screen next term'],16]};PL.X=PL.S;
+const GOAL=['ہدف: دوبارہ ٹیسٹ پر متاثرہ شعبے کا اسکور کم از کم 20 پوائنٹ کم ہو اور ٹریکنگ ریٹنگ میں کم از کم 1 پوائنٹ بہتری آئے۔ ورنہ اگلے درجے پر جائیں یا ماہر سے رجوع کریں۔','Goal: at retest the flagged-area score falls by 20+ percentage points and tracking ratings rise by 1+ point. If not, move up a tier or refer to a specialist.'];
+const BASIS2='Strategies follow widely used evidence-based practice: explicit, systematic instruction and phonics (National Reading Panel, 2000), spaced retrieval practice (Dunlosky et al., 2013), classroom working-memory supports (Gathercole & Alloway), tiered support / MTSS with progress monitoring, and daily report cards for attention. Age bands: 5-7, 8-11, 12+.';
+const AB=a=>{a=parseInt(a);return isNaN(a)?1:a<8?0:a<12?1:2},ABL=['5-7','8-11','12+'];
+const avg=p=>Object.values(p).reduce((a,b)=>a+b,0)/9;
+function dash(){const ks=db.kids,cnt={},cls={};let tested=0,imp=0,due=[];
+ks.forEach(k=>{const t=k.tests[k.tests.length-1];let c='-';if(t){tested++;c=vd(pct(t.ans)).k;if(k.tests.length>1&&avg(pct(k.tests[0].ans))-avg(pct(t.ans))>=10)imp++;if(c!='O'&&(Date.now()-new Date(t.d))/864e5>=56)due.push(k)}
+cnt[c]=(cnt[c]||0)+1;(cls[k.cls]=cls[k.cls]||{})[c]=(cls[k.cls][c]||0)+1});
+const col=c=>c=='-'?'#cbd5e1':VT[c][1],nm=c=>c=='-'?'Not tested':VT[c][0][1],ord=['S','X','L','A','M','O','-'];
+const tl=(n,l,g)=>'<div class=tile style="background:linear-gradient(135deg,'+g+')"><b>'+n+'</b><span>'+l+'</span></div>';
+return'<div class=grid>'+tl(ks.length,'Students / طلبہ','#4f46e5,#818cf8')+tl(tested,'Assessed / جانچ شدہ','#0891b2,#22d3ee')+tl((cnt.S||0)+(cnt.X||0),'Slow learner (probable)','#dc2626,#f87171')+tl(imp,'Improving / بہتر','#059669,#34d399')+tl(due.length,'Review due / نظرثانی','#d97706,#fbbf24')+'</div>'+
+'<div class=c><h3>Class-wise overview / کلاس وار</h3>'+(Object.keys(cls).sort().map(c=>{const o=cls[c],n=Object.values(o).reduce((a,b)=>a+b,0);return'<div class=sm>'+E(c)+' ('+n+')</div><div class=sb>'+ord.filter(x=>o[x]).map(x=>'<i title="'+nm(x)+'" style="width:'+o[x]/n*100+'%;background:'+col(x)+'"></i>').join('')+'</div>'}).join('')||'<div class=sm>No data</div>')+'<div class=lg>'+ord.map(x=>'<span><i style="background:'+col(x)+'"></i>'+nm(x)+(cnt[x]?' ('+cnt[x]+')':'')+'</span>').join('')+'</div></div>'+
+(due.length?'<div class=c><h3>Review due (8+ weeks) / دوبارہ ٹیسٹ درکار</h3>'+due.map(k=>'<div class=row><b style="flex:1">'+E(k.name)+' <span class=sm>'+E(k.cls)+'</span></b><button onclick="op('+k.id+')">Open</button></div>').join('')+'</div>':'')+
+'<div class=c><h3>Institution / ادارہ</h3><input id=inn placeholder="Institution name" value="'+E(db.inst||'')+'"><button class=s onclick="db.inst=$(\'#inn\').value.trim();sv();view()">Save</button></div>'}
+function rb(k){const t=k.tests[k.tests.length-1];let h='<h3>'+E(db.inst||'')+'</h3><h3>'+E(k.name)+'</h3><div class=sm>Class: '+E(k.cls)+' | Age: '+E(k.age)+' (band '+ABL[AB(k.age)]+') | '+E(k.g||'-')+'</div>';
+if(t){const p=pct(t.ans),v=vd(p),pl=PL[v.k],b=AB(k.age),rv=new Date(new Date(t.d).getTime()+pl[1]*7*864e5).toISOString().slice(0,10),fl=Object.keys(D).filter(z=>p[z]>=50&&z!='E');
+h+='<h3>Result ('+E(t.d)+')</h3>'+bars(p)+'<p><span class=bd style="background:'+v.c+'">'+LI(v.t)+'</span></p><p>'+L(v.d)+'</p><h3>Action plan / لائحہ عمل</h3><p>'+L(pl[0])+'</p><p><b>Review date:</b> '+rv+'</p><p>'+L(GOAL)+'</p>';
+if(p.E>=50)h+='<h3>'+NM('E')+'</h3><ul><li>'+L(ST.E[0])+'</li></ul>';
+if(fl.length)h+='<h3>Strategies for age '+ABL[b]+'</h3><ul>'+fl.map(z=>'<li><b>'+NM(z)+':</b> '+L(ST[z][b])+'</li>').join('')+'</ul>';
+const w=Object.keys(D).filter(z=>p[z]>=30&&p[z]<50);if(w.length)h+='<p class=sm>Watch / زیرِ نگرانی: '+w.map(NM).join(', ')+'</p>';
+if(t.n)h+='<p class=sm>Note: '+E(t.n)+'</p>';
+if(k.tests.length>1){const f=pct(k.tests[0].ans);h+='<h3>Impact since first test / پہلے ٹیسٹ سے فرق</h3><table><tr><th>Area<th>'+E(k.tests[0].d)+'<th>'+E(t.d)+'<th>Change</tr>'+Object.keys(D).map(z=>{const d=p[z]-f[z];return'<tr><td>'+NM(z)+'<td>'+f[z]+'%<td>'+p[z]+'%<td class='+(d<=-10?'up':d>=10?'dn':'')+'>'+(d<=-10?'▼ Improved ':d>=10?'▲ Worse ':'► Same ')+d+'</tr>'}).join('')+'</table>'}}
+else h+='<p>Abhi diagnostic test nahi hua.</p>';
+return h+'<h3>Progress Tracking</h3>'+pr(k)+'<p class=sm>Yeh report sirf screening hai, tibbi/nafsiyati tashkhees nahi.</p><p class=sm>'+BASIS+'</p><p class=sm>'+BASIS2+'</p>'}
+const inst0=0;
+const bars=p=>Object.keys(D).map(k=>'<div class=sm>'+NM(k)+' — '+p[k]+'%'+(p[k]>=50?' (zyada)':p[k]>=30?' (nigrani)':'')+'</div><div class=bar><i style="width:'+p[k]+'%;background:'+(p[k]>=50?'#c0392b':p[k]>=30?'#d68910':'#2e8b57')+'"></i></div>').join('');
+function slist(){const cl=[...new Set(db.kids.map(k=>k.cls))].sort();let ks=db.kids.filter(k=>!fc||k.cls==fc);
+ks.sort((a,b)=>fs=='a'?a.age-b.age:fs=='c'?a.cls.localeCompare(b.cls):a.name.localeCompare(b.name));
+if(kf)return kform();
+return'<div class=c><div class=row><button onclick="kf={};view()">+ Add Student</button><button class=g onclick=bk()>Download Backup</button><button class=g onclick="$(\'#rf\').click()">Restore Backup</button><input type=file id=rf accept=".json" hidden onchange=rs(this)></div>'+
+'<div class=row><select onchange="fc=this.value;view()"><option value="">All classes</option>'+cl.map(c=>'<option'+(c==fc?' selected':'')+'>'+E(c)+'</option>').join('')+'</select><select onchange="fs=this.value;view()"><option value=n>Name</option><option value=c'+(fs=='c'?' selected':'')+'>Class</option><option value=a'+(fs=='a'?' selected':'')+'>Age</option></select></div></div>'+
+(ks.length?ks.map(k=>{const t=k.tests[k.tests.length-1],v=t?vd(pct(t.ans)):null;return'<div class=c><b>'+E(k.name)+'</b> <span class=sm>Class: '+E(k.cls)+' | Age: '+E(k.age)+'</span><br>'+(v?'<span class=bd style="background:'+v.c+'">'+LI(v.t)+'</span>':'<span class=sm>Not tested yet</span>')+'<div class=row><button onclick="op('+k.id+')">Open</button><button class=g onclick="kf=db.kids.find(x=>x.id=='+k.id+');view()">Edit</button><button class=r onclick="dk('+k.id+')">Delete</button></div></div>'}).join(''):'<div class=c>Koi bacha nahi. "+ Add Student" dabayen.</div>')}
+function kform(){const k=kf;return'<div class=c><h3>'+(k.id?'Edit student':'New student')+'</h3>Name<input id=fn value="'+E(k.name)+'">Class<input id=fc2 value="'+E(k.cls)+'">Age (years)<input id=fa type=number value="'+E(k.age)+'">Gender<select id=fg><option>Boy</option><option'+((k.g=='Girl'||k.g=='Larki')?' selected':'')+'>Girl</option></select><div class=row><button class=s onclick="sk()">Save</button><button class=g onclick="kf=null;view()">Cancel</button></div></div>'}
+function sk(){const n=$('#fn').value.trim(),c=$('#fc2').value.trim();if(!n||!c)return nt('Name and class are required');const o={name:n,cls:c,age:$('#fa').value||'-',g:$('#fg').value};
+if(kf.id)Object.assign(kf,o);else db.kids.push(Object.assign({id:Date.now(),tests:[],logs:[]},o));kf=null;sv();view()}
+function dk(id){cf('Delete this student and all records? / اس بچے اور اس کا تمام ریکارڈ حذف کریں؟',()=>{db.kids=db.kids.filter(k=>k.id!=id);sv();view()})}
+function op(id){cur=id;tab='test';draft=null;tl=-1;view()}
+function kidv(){const k=K();return'<div class=row><button class=g onclick="cur=null;view()">← Back</button><b>'+E(k.name)+'</b><span class=sm>'+E(k.cls)+' | '+E(k.age)+' saal</span></div><div class="c tabs row">'+[['test','Diagnostic Test'],['track','Tracking'],['rep','Report']].map(x=>'<button class="'+(tab==x[0]?'on':'')+'" onclick="tab=\''+x[0]+'\';draft=null;view()">'+x[1]+'</button>').join('')+'</div>'+(tab=='test'?tt(k):tab=='track'?tk(k):'<div class=c>'+rb(k)+'<div class=row><button onclick=dr()>Download Report (HTML)</button><button class=g onclick=dc()>Download Progress (CSV)</button></div><div class=sm>HTML report ko browser mein khol kar Print → PDF bhi bana sakte hain.</div></div>')}
+function tt(k){if(draft)return tf(k);return'<div class=c><button onclick="draft={i:-1,a:{},d:td(),n:\'\'};view()">+ New Diagnostic Test</button><div class=sm>Yeh screening hai, doctor ki tashkhees nahi. Pichle 1-2 maah ke mushahide par جواب دیں.</div></div>'+k.tests.map((t,i)=>{const v=vd(pct(t.ans));return'<div class=c><b>'+E(t.d)+'</b> <span class=bd style="background:'+v.c+'">'+LI(v.t)+'</span><div class=row><button class=g onclick="draft={i:'+i+',a:JSON.parse(JSON.stringify(db.kids.find(x=>x.id==cur).tests['+i+'].ans)),d:\''+t.d+'\',n:db.kids.find(x=>x.id==cur).tests['+i+'].n||\'\'};view()">Edit</button><button class=r onclick="dt('+i+')">Delete</button></div></div>'}).reverse().join('')}
+function tf(k){let h='<div class=c>Date<input type=date id=td value="'+draft.d+'"><div class=sm dir=rtl>ہر سوال کے لیے: گزشتہ 1-2 ماہ کے مشاہدے کی بنیاد پر بتائیں کہ بچے میں یہ مسئلہ کتنا نظر آتا ہے۔</div><div class=sm>For each item, rate how often the child shows this, based on the last 1-2 months of observation.</div><details class=sm><summary>Research basis</summary>'+BASIS+'</details>';
+for(const z in D){h+='<h3>'+NM(z)+'</h3>';D[z][1].forEach((q,i)=>{h+='<div class=q>'+L(q)+'<div class=opt>'+OP.map((o,v)=>'<label><input type=radio name="'+z+i+'" value='+v+((draft.a[z+i]||0)==v?' checked':'')+'>'+LI(o)+'</label>').join('')+'</div></div>'})}
+return h+'Notes<textarea id=tn rows=2>'+E(draft.n)+'</textarea><div class=row><button class=s onclick=st()>Save Test</button><button class=g onclick="draft=null;view()">Cancel</button></div></div>'}
+function st(){const k=K(),a={};for(const z in D)D[z][1].forEach((_,i)=>{const r=document.querySelector('input[name="'+z+i+'"]:checked');a[z+i]=r?+r.value:0});const t={d:$('#td').value||td(),ans:a,n:$('#tn').value};
+if(draft.i>=0)k.tests[draft.i]=t;else k.tests.push(t);k.tests.sort((x,y)=>x.d.localeCompare(y.d));draft=null;sv();view()}
+function dt(i){cf('Delete this test? / یہ ٹیسٹ حذف کریں؟',()=>{K().tests.splice(i,1);sv();view()})}
+function tk(k){const l=tl>=0?k.logs[tl]:{d:td(),r:{},n:''};
+return'<div class=c><h3>'+(tl>=0?'Edit observation':'Today observation / آج کا مشاہدہ')+'</h3>Date<input type=date id=ld value="'+l.d+'"><div class=sm>1 = Very weak … 5 = Very good / 1 = بہت کمزور … 5 = بہت اچھا</div>'+AR.map(a=>'<div class=row><span style="flex:1">'+AN(a)+'</span><select id=lg'+a[0]+'>'+[1,2,3,4,5].map(v=>'<option'+((l.r[a[0]]||3)==v?' selected':'')+'>'+v+'</option>').join('')+'</select></div>').join('')+'Note<textarea id=ln rows=2>'+E(l.n)+'</textarea><div class=row><button class=s onclick=sl()>Save</button>'+(tl>=0?'<button class=g onclick="tl=-1;view()">Cancel</button>':'')+'</div></div><div class=c><h3>Progress / پیش رفت</h3>'+pr(k)+'</div>'+k.logs.map((x,i)=>'<div class=c><b>'+E(x.d)+'</b> <span class=sm>'+AR.map(a=>a[1].split(' ')[0]+':'+x.r[a[0]]).join(' ')+'</span>'+(x.n?'<div class=sm>'+E(x.n)+'</div>':'')+'<div class=row><button class=g onclick="tl='+i+';view();scrollTo(0,0)">Edit</button><button class=r onclick="dlg('+i+')">Delete</button></div></div>').reverse().join('')}
+function sl(){const k=K(),r={};AR.forEach(a=>r[a[0]]=+$('#lg'+a[0]).value);const o={d:$('#ld').value||td(),r,n:$('#ln').value};if(tl>=0)k.logs[tl]=o;else k.logs.push(o);k.logs.sort((x,y)=>x.d.localeCompare(y.d));tl=-1;sv();view()}
+function dlg(i){cf('Delete this observation? / یہ مشاہدہ حذف کریں؟',()=>{K().logs.splice(i,1);sv();view()})}
+function sp(v){const w=70,h=22,p=v.map((x,i)=>(v.length>1?i*w/(v.length-1):w/2).toFixed(1)+','+(h-(x-1)/4*h).toFixed(1)).join(' ');return'<svg width=70 height=24><polyline fill=none stroke="#1f5f8b" stroke-width=2 points="'+p+'"/></svg>'}
+function pr(k){if(k.logs.length<2)return'<div class=sm>Progress dekhne ke liye kam az kam 2 observations chahiye ('+k.logs.length+' hain).</div>';let h='<table><tr><th>Area<th>First<th>Latest<th>Change<th>Trend</tr>';
+AR.forEach(a=>{const v=k.logs.map(l=>l.r[a[0]]||3),d=v[v.length-1]-v[0];h+='<tr><td>'+AN(a)+'<td>'+v[0]+'<td>'+v[v.length-1]+'<td class='+(d>0?'up':d<0?'dn':'')+'>'+(d>0?'▲ Improved '+d:d<0?'▼ Declined '+(-d):'► Same')+'<td>'+sp(v)+'</tr>'});return h+'</table>'}
+function dr(){const k=K();dl('Report_'+k.name+'_'+td()+'.html','<!DOCTYPE html><html><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><style>body{font-family:sans-serif;max-width:720px;margin:auto;padding:12px}.bar{background:#e3e9ef;height:14px;border-radius:6px}.bar i{display:block;height:100%;border-radius:6px}table{width:100%;border-collapse:collapse}td,th{border-bottom:1px solid #ddd;padding:4px;text-align:left}.sm{font-size:12px;color:#555}.ui{unicode-bidi:isolate}.ur{direction:rtl;unicode-bidi:isolate;display:block;text-align:right;font-family:Noto Nastaliq Urdu,Jameel Noori Nastaleeq,serif;font-size:18px;line-height:2}.up{color:green}.dn{color:red}</style></head><body>'+rb(k)+'</body></html>','text/html')}
+function dc(){const k=K();dl('Progress_'+k.name+'.csv','\ufeffTareekh,'+AR.map(a=>a[1]).join(',')+',Note\n'+k.logs.map(l=>[l.d].concat(AR.map(a=>l.r[a[0]]),['"'+(l.n||'').replace(/"/g,'""')+'"']).join(',')).join('\n'),'text/csv')}
+function bk(){dl('LearnerApp_Backup_'+td()+'.json',JSON.stringify(db),'application/json')}
+function rs(i){const f=i.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const d=JSON.parse(r.result);if(!Array.isArray(d.kids))throw 0;cf('Replace current data with backup ('+d.kids.length+' students)? / موجودہ ڈیٹا بیک اپ سے بدل دیں؟',()=>{db=d;sv();view()},'Yes, Restore')}catch(e){nt('Yeh sahi backup file nahi hai')}i.value=''};r.readAsText(f)}
+let hv='d';function home(){if(kf)return kform();return'<div class=nav><button class="'+(hv=='d'?'on':'')+'" onclick="hv=\'d\';view()">Dashboard</button><button class="'+(hv=='s'?'on':'')+'" onclick="hv=\'s\';view()">Students</button></div>'+(hv=='d'?dash():slist())}
+function cf(m,f,l){const o=document.createElement('div');o.style.cssText='position:fixed;left:0;top:0;right:0;bottom:0;background:#0008;display:flex;align-items:center;justify-content:center;z-index:99;padding:20px';o.innerHTML='<div class=c style="max-width:340px;margin:0"><p>'+m+'</p><div class=row><button class=r id=cy>'+(l||'Yes, Delete')+'</button><button class=g id=cn>Cancel</button></div></div>';document.body.appendChild(o);$('#cn').onclick=()=>o.remove();$('#cy').onclick=()=>{o.remove();f()}}
+function nt(m){const o=document.createElement('div');o.style.cssText='position:fixed;left:10px;right:10px;bottom:20px;background:#1e293b;color:#fff;padding:12px;border-radius:12px;z-index:99;text-align:center';o.textContent=m;document.body.appendChild(o);setTimeout(()=>o.remove(),2500)}
+function view(){app.innerHTML=cur==null?home():kidv();$('#hn').textContent=db.inst||'Learner Screening & Tracking'}
+
+window.handleAndroidBack = function() {
+  if (cur !== null) {
+    if (draft !== null) {
+      draft = null;
+      view();
+      return true;
+    }
+    cur = null;
+    view();
+    return true;
+  }
+  if (kf !== null) {
+    kf = null;
+    view();
+    return true;
+  }
+  return false;
+};
+
+$('#lsel').value=lang;view();
+</script></body></html>
